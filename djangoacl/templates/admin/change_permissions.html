@@ -1,0 +1,39 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+
+{{ messages }}
+{% if messages %}
+    <ul class="messagelist">
+    {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	{% endfor %}
+	</ul>
+{% endif %}
+
+<p>Select tag to apply:</p>
+
+<form action="." method="post">{% csrf_token %}
+
+	{% if items %}
+		<h2>Apply the permittions to registers:</h2>
+		<ul>
+			{% for item in items %}
+				<ol>{{ item }}</ol>
+			{% endfor %}
+		</ul>
+
+		<br/>    
+		<p>{{ ChangePermissionsForm.as_table }}</p>
+	   	
+	{% else %}
+	    You didn't select items or you don't have permissions to change them.
+	{% endif %}
+	<br/>
+	<br/>
+
+    <input type="hidden" name="action" value="change_permissions_action" />
+    <input type="submit" name="apply" value="Apply tag" />
+</form>
+
+{% endblock %}
